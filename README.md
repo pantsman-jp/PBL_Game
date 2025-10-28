@@ -6,7 +6,7 @@
 ```
 
 ## Usage
-Require `pyxel`.
+Require `Python3`, `pyxel`.
 
 Install via
 ```PowerShell
