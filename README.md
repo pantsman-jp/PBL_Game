@@ -8,12 +8,14 @@
 ## Usage
 Require `pyxel`.
 
-Install by
+Install via
 ```PowerShell
 > pip install pyxel
 ```
 
-Then run
+To run
 ```PowerShell
 > python src/main.py
 ```
+
+To quit, press `q` key.

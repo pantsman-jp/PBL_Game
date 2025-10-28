@@ -14,7 +14,6 @@ def draw():
 
 def main():
     pyxel.init(160, 120, title="Hello Pyxel")
-    pyxel.images[0].load(0, 0, "assets/pyxel_logo_38x16.png")
     pyxel.run(update, draw)
 
 
