@@ -21,4 +21,4 @@ To run
 To quit, press `q` key.
 
 ---
-Copyright © 2025 pantsman, ISSA-Motomu, tanosou
+Copyright © 2025 pantsman, ISSA-Motomu, tanosou, osato03
