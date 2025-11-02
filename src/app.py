@@ -8,7 +8,6 @@ from core.talk import Talk
 class App:
     def __init__(self):
         px.init(128, 128, title="Tiny Quiz Field", display_scale=2)
-        # テクスチャ不要のため資産ロードは無し
         self.x = 8
         self.y = 8
         self.items = []

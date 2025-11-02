@@ -23,7 +23,7 @@ class Field:
             return
         dx = int(btn["r"]) - int(btn["l"])
         dy = int(btn["d"]) - int(btn["u"])
-        if dx != 0 or dy != 0:
+        if (dx != 0) or (dy != 0):
             self.start_move(dx, dy)
         elif btn["a"]:
             self.app.talk.try_talk()
