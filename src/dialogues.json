@@ -1,0 +1,32 @@
+{
+    "npc_1": {
+        "position": [
+            8,
+            9,
+            0
+        ],
+        "lines": [
+            "Hello, do you want to try quiz?"
+        ],
+        "quiz": {
+            "question": "What language is Pyxel written in?",
+            "choices": [
+                "Python",
+                "C++",
+                "Rust"
+            ],
+            "answer": 0,
+            "reward": "key"
+        }
+    },
+    "npc_2": {
+        "position": [
+            10,
+            7,
+            0
+        ],
+        "lines": [
+            "Hello, World!"
+        ]
+    }
+}
