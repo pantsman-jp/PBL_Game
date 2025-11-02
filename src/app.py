@@ -14,7 +14,6 @@ class App:
         self.system = System(self)
         self.field = Field(self)
         self.talk = Talk(self)
-        # ロード
         self.system.load()
         px.run(self.update, self.draw)
 
