@@ -31,7 +31,7 @@ class Field:
 
         dx = int(btn["r"]) - int(btn["l"])
         dy = int(btn["d"]) - int(btn["u"])
-        if dx != 0 or dy != 0:
+        if (dx != 0) or (dy != 0):
             self.start_move(dx, dy)
         elif btn["a"]:
             self.app.talk.try_talk()
@@ -64,7 +64,7 @@ class Field:
         # px.bltm(-map_x + 56, -map_y + 56, 0, 0, 0, 128, 128)
 
         # --- NPC描画 ---
-        for key, data in self.app.talk.dialogues.items():
+        for [_, data] in self.app.talk.dialogues.items():
             pos = data.get("position")
             if not pos:
                 continue

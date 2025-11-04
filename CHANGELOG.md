@@ -1,6 +1,7 @@
 # ChangeLog of PBL_Game
 
 ## v0.3.1 (2025-11-03)
+- `CHANGELOG.md` の日本語化
 - コードの説明を追加
 - 将来的なテクスチャ、BGM 追加に対応
 

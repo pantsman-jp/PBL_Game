@@ -18,8 +18,9 @@ class System:
         """
         プレイヤー位置と所持アイテムを保存。
         """
-        data = {"x": self.app.x, "y": self.app.y, "items": self.app.items}
-        save_json(self.savefile, data)
+        save_json(
+            self.savefile, {"x": self.app.x, "y": self.app.y, "items": self.app.items}
+        )
 
     def load(self):
         """

@@ -20,5 +20,5 @@ class Window:
         画面下部に黒背景と白文字でメッセージを表示する。
         """
         px.rect(8, 80, 112, 40, 0)  # 背景（黒）
-        for i, line in enumerate(self.lines):
+        for [i, line] in enumerate(self.lines):
             px.text(12, 84 + i * 8, line, 7)

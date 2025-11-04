@@ -24,7 +24,7 @@ class Talk:
         """
         for key, data in self.dialogues.items():
             pos = tuple(data.get("position", []))
-            if pos and (pos[0], pos[1]) == (self.app.x, self.app.y):
+            if (pos and (pos[0], pos[1])) == (self.app.x, self.app.y):
                 self.active = key
                 self.open_dialog(data)
                 return
@@ -92,9 +92,8 @@ class Talk:
                 self.quiz_choice = 0
                 return
 
-            choices = q.get("choices", [])
             lines = [q.get("question", "")]
-            for i, c in enumerate(choices):
+            for [i, c] in enumerate(q.get("choices", [])):
                 prefix = ">" if i == self.quiz_choice else " "
                 lines.append(f"{prefix} {i + 1}. {c}")
             self.window = Window(lines)
