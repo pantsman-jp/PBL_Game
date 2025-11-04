@@ -1,5 +1,9 @@
 # ChangeLog of PBL_Game
 
+## v0.4.0(2025-11-04)
+- 起動不能バグの修正
+- `README.md` の加筆修正
+
 ## v0.3.2 (2025-11-04)
 - `assets.pyxres` の追加
 - `k8x12S.bdf` の追加
