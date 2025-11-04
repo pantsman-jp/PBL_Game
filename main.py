@@ -6,6 +6,11 @@
 """
 
 from app import App
+import traceback
 
 if __name__ == "__main__":
-    App()
+    try:
+        App().run()
+    except Exception:
+        traceback.print_exc()
+        input("\n[Enter]キーで終了")

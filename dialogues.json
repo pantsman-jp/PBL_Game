@@ -6,14 +6,15 @@
             0
         ],
         "lines": [
-            "Hello, do you want to try quiz?"
+            "よく来たな！",
+            "z キーを押したらクイズが始まるぞ！"
         ],
         "quiz": {
-            "question": "What language is Pyxel written in?",
+            "question": "このゲームは何の言語で書かれている？",
             "choices": [
                 "Python",
                 "C++",
-                "Rust"
+                "日本語"
             ],
             "answer": 0,
             "reward": "key"
@@ -26,7 +27,7 @@
             0
         ],
         "lines": [
-            "Hello, World!"
+            "Hello, world!"
         ]
     }
 }
