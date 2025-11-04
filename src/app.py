@@ -1,9 +1,9 @@
 """
 アプリケーションクラス（ゲーム本体） | `src/app.py`
-
-- Pyxel初期化、BGM再生管理、サブモジュール連携を担当
+Pyxel初期化、BGM再生管理、サブモジュール連携を担当。
 """
 
+import os
 import pyxel as px
 from utils import get_btn_state
 from core.system import System
@@ -13,15 +13,15 @@ from core.talk import Talk
 
 class App:
     def __init__(self):
-        # 画面初期化
-        px.init(
-            128, 128, title="Tiny Quiz Field", display_scale=2, font="fonts/k8x12S.bdf"
-        )
+        # --- フォント設定（Pyxel 1.x 系用） ---
+        os.environ["PYXEL_FONT"] = "k8x12S.bdf"
+
+        # --- Pyxel初期化 ---
+        px.init(128, 128, title="Tiny Quiz Field", display_scale=2)
 
         # --- 将来的なアセット/BGM対応 ---
-        # assets.pyxres にタイルや音楽を登録した後、有効化する：
         # px.load("assets.pyxres")
-        # self.system.play_bgm(0)  # フィールドBGM開始
+        # self.system.play_bgm(0)
 
         # プレイヤー初期化
         self.x = 8
@@ -40,9 +40,6 @@ class App:
         px.run(self.update, self.draw)
 
     def update(self):
-        """
-        1フレームごとの更新処理。
-        """
         btn = get_btn_state()
         self.talk.update(btn)
         if self.talk.window:
@@ -50,8 +47,5 @@ class App:
         self.field.update(btn)
 
     def draw(self):
-        """
-        1フレームごとの描画処理。
-        """
         self.field.draw()
         self.talk.draw()
