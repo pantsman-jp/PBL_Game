@@ -13,6 +13,13 @@ Install via
 > pip install pyxel
 ```
 
+Open Pyxel Editor
+```PowerShell
+> pyxel edit Pyxelリソースファイル
+公式URL
+https://github.com/kitao/pyxel/blob/main/docs/README.ja.md
+```
+
 To run
 ```PowerShell
 > python src/main.py
