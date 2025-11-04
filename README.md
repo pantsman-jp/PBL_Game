@@ -15,7 +15,7 @@
 
 実行方法は以下。
 ```PowerShell
-> python src/main.py
+> python main.py
 ```
 
 ---
