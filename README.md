@@ -6,11 +6,12 @@
 ```
 
 ## 使い方
-`Python3`, `pyxel` が必要。
+`Python3`, `Pyxel`, `Pillow` が必要。
 
 `pyxel` は以下でインストール。
 ```PowerShell
 > pip install pyxel
+> pip install Pillow
 ```
 
 実行方法は以下。

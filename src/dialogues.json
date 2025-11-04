@@ -6,10 +6,10 @@
             0
         ],
         "lines": [
-            "Hello, do you want to try quiz?"
+            "クイズやろうぜ"
         ],
         "quiz": {
-            "question": "What language is Pyxel written in?",
+            "question": "このゲームは\n何の言語で書かれている？",
             "choices": [
                 "Python",
                 "C++",
@@ -26,7 +26,7 @@
             0
         ],
         "lines": [
-            "Hello, World!"
+            "これ日本語だけど読める？"
         ]
     }
 }
