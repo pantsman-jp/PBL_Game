@@ -16,7 +16,7 @@
 実行方法は以下。**`/src` ディレクトリまで移動すること。**
 ```PowerShell
 > cd src
-> python src/main.py
+> python main.py
 ```
 
 ## 開発者へ
