@@ -1,0 +1,312 @@
+{
+  "scenes": [
+    {
+      "id": "brazil",
+      "name": "Burajiru: Gomu no Mori (Dansei Sozai)",
+      "npc": "Rushio",
+      "position": [
+        120,
+        60
+      ],
+      "pre_dialog": [
+        {
+          "speaker": "Rushio",
+          "text": "Kono mori wa mayou to deraren zo. Ore wa Rushio."
+        },
+        {
+          "speaker": "Kyukodai-sei",
+          "text": "Roketto ni tsukau gomu o sagashite imasu."
+        },
+        {
+          "speaker": "Rushio",
+          "text": "Shinayakasa ga tsuyosa o umu. Tameshite miru ka?"
+        }
+      ],
+      "quiz": {
+        "type": "choice",
+        "question": "Tennen gomu no shuseibun wa dore?",
+        "choices": [
+          "Poriechiren",
+          "Poriisopuren",
+          "Porisuchiren",
+          "Porikaboneto"
+        ],
+        "answer_index": 1,
+        "hint": "\"Iso\" no namae o omoidase.",
+        "after_success": [
+          {
+            "speaker": "Rushio",
+            "text": "Sore da! Shizen no hazumi o motte ike."
+          },
+          {
+            "speaker": "System",
+            "text": "\"Tennen gomu burokku\" o te ni ireta!"
+          }
+        ],
+        "after_fail": [
+          {
+            "speaker": "Rushio",
+            "text": "Oshii! Hinto wa \"Iso\" da. Mou ikkai!"
+          }
+        ]
+      },
+      "reward": "Tennen gomu burokku"
+    },
+    {
+      "id": "russia",
+      "name": "Roshia: Koutetsu no Kuni (Goukin)",
+      "npc": "Iwanofu",
+      "position": [
+        200,
+        50
+      ],
+      "pre_dialog": [
+        {
+          "speaker": "Iwanofu",
+          "text": "Tsuyosa wa netsu to kanazuchi de umareru."
+        },
+        {
+          "speaker": "Kyukodai-sei",
+          "text": "Roketto no tame ni tsuyoi kinzoku ga hitsuyou desu."
+        },
+        {
+          "speaker": "Iwanofu",
+          "text": "Naraba kotaeyo. Tetsu no kokoro o shiru ka?"
+        }
+      ],
+      "quiz": {
+        "type": "choice",
+        "question": "Fe ni Cr to Ni o kuwaete taishokusei o takameta goukin wa?",
+        "choices": [
+          "Sutenresu kou",
+          "Chitan goukin",
+          "Seidou",
+          "Oudou"
+        ],
+        "answer_index": 0,
+        "hint": "Daidokoro no nagashidana o omoidase.",
+        "after_success": [
+          {
+            "speaker": "Iwanofu",
+            "text": "Yoshi. Kitaenaoseta na."
+          },
+          {
+            "speaker": "System",
+            "text": "\"Chougoukin pureto\" o te ni ireta!"
+          }
+        ],
+        "after_fail": [
+          {
+            "speaker": "Iwanofu",
+            "text": "Mada tarin. Daidokoro ni aru kinzoku da."
+          }
+        ]
+      },
+      "reward": "Chougoukin pureto"
+    },
+    {
+      "id": "germany",
+      "name": "Doitsu: Nenryou Kenkyuujo (Suishinzai)",
+      "npc": "Kurausu Hakase",
+      "position": [
+        160,
+        40
+      ],
+      "pre_dialog": [
+        {
+          "speaker": "Kurausu Hakase",
+          "text": "Nenryou wa inochi no hi da. Chikara de ari sekinin da."
+        },
+        {
+          "speaker": "Risa",
+          "text": "Anzen to seinou no ryouritsu ga muzukashii no."
+        },
+        {
+          "speaker": "Kyukodai-sei",
+          "text": "Anzen ni atsukaeru chishiki o mi ni tsukemasu!"
+        }
+      ],
+      "quiz": {
+        "type": "choice",
+        "question": "Ekitai roketto nenryou no tadashii kumiawase wa?",
+        "choices": [
+          "Ekitai sanso - keroshin",
+          "Ekitai chisso - metan",
+          "Ekitai suiso - kuuki",
+          "Ekitai heriumu - touyu"
+        ],
+        "answer_index": 0,
+        "hint": "Sankazai wa sanso ga kagi. Kuuki dewa yowai.",
+        "after_success": [
+          {
+            "speaker": "Kurausu Hakase",
+            "text": "Yoku moeru kumiawase da. Shikkari mananda na."
+          },
+          {
+            "speaker": "System",
+            "text": "\"Ekitai nenryou tanku\" o te ni ireta!"
+          }
+        ],
+        "after_fail": [
+          {
+            "speaker": "Risa",
+            "text": "Kuuki ja tarinai no. Sanso o erande."
+          }
+        ]
+      },
+      "reward": "Ekitai nenryou tanku"
+    },
+    {
+      "id": "africa_port",
+      "name": "Afurika Minato-machi: Funanori to no Koushou",
+      "npc": "Kai",
+      "position": [
+        80,
+        60
+      ],
+      "pre_dialog": [
+        {
+          "speaker": "Kai",
+          "text": "Oosutoraria e? Umi o nameruna yo."
+        },
+        {
+          "speaker": "Kyukodai-sei",
+          "text": "Doushitemo ikitain desu!"
+        },
+        {
+          "speaker": "Kai",
+          "text": "Nara nami to kaze no rikutsu o shitteru ka?"
+        }
+      ],
+      "quiz": {
+        "type": "choice",
+        "question": "Kaisui no atsuryoku wa fukasa ni hirei suru. Fukasa ga 2-bai nara atsuryoku wa?",
+        "choices": [
+          "Hanbun",
+          "Onaji",
+          "2-bai",
+          "4-bai"
+        ],
+        "answer_index": 2,
+        "hint": "p = rho g h. Fukasa ni hirei suru.",
+        "after_success": [
+          {
+            "speaker": "Kai",
+            "text": "Rikutsu ga wakatteru na. 'Seresu-gou' ni nosete yaru."
+          },
+          {
+            "speaker": "System",
+            "text": "Kouro 'Afurika -> Oosutoraria' ga kaihou sareta!"
+          }
+        ],
+        "after_fail": [
+          {
+            "speaker": "Kai",
+            "text": "Hirei tte kotoba o omoidase."
+          }
+        ]
+      },
+      "reward": "Jousen kyokashou"
+    },
+    {
+      "id": "australia",
+      "name": "Oosutoraria: Arumi no Sabaku (Keiryou Sozai)",
+      "npc": "Jakku",
+      "position": [
+        180,
+        120
+      ],
+      "pre_dialog": [
+        {
+          "speaker": "Jakku",
+          "text": "Koko de kinzoku o horu yatsu wa mezurashii."
+        },
+        {
+          "speaker": "Kyukodai-sei",
+          "text": "Roketto o karuku shitakute arumi o sagashite imasu."
+        },
+        {
+          "speaker": "Jakku",
+          "text": "Karusa to tsuyosa o ryouritsu dekiru nara yuzurou."
+        }
+      ],
+      "quiz": {
+        "type": "choice",
+        "question": "Arumi ga karui no wa naze?",
+        "choices": [
+          "Genshibangou ga chiisai",
+          "Mitsudo ga takai",
+          "Denshi ga ooi",
+          "Youten ga takai"
+        ],
+        "answer_index": 0,
+        "hint": "Shuukihyou no hidari no kinzoku wa daitai karui.",
+        "after_success": [
+          {
+            "speaker": "Jakku",
+            "text": "Ii janai ka. Omae no ishi mo karukute tsuyoi."
+          },
+          {
+            "speaker": "System",
+            "text": "\"Aruminiumu ingotto\" o te ni ireta!"
+          }
+        ],
+        "after_fail": [
+          {
+            "speaker": "Jakku",
+            "text": "Hidarigawa... shuukihyou no ichi da. Mou ichido!"
+          }
+        ]
+      },
+      "reward": "Aruminiumu ingotto"
+    },
+    {
+      "id": "india_final",
+      "name": "Indo: Puroguramu no Miyako (Saishuu-shou)",
+      "npc": "Patiru Hakase",
+      "position": [
+        60,
+        140
+      ],
+      "pre_dialog": [
+        {
+          "speaker": "Patiru Hakase",
+          "text": "Sozai wa sorotta. Daga meirei ga nakereba ugokanai."
+        },
+        {
+          "speaker": "Aniru",
+          "text": "Python, dekiru? Jaa yattemiyou!"
+        }
+      ],
+      "quiz": {
+        "type": "choice",
+        "question": "Tsugi no kodo no shutsuryoku wa?\n\ntotal=0\nfor i in range(3):\n    total += i*2\nprint(total)",
+        "choices": [
+          "3",
+          "6",
+          "9",
+          "12"
+        ],
+        "answer_index": 1,
+        "hint": "range(3)=0,1,2 -> 0+2+4=6.",
+        "after_success": [
+          {
+            "speaker": "Patiru Hakase",
+            "text": "Kanpeki da. Kore de roketto ni kokoro ga yadoru."
+          },
+          {
+            "speaker": "System",
+            "text": "\"Seigyo puroguramu chippu\" o te ni ireta!"
+          }
+        ],
+        "after_fail": [
+          {
+            "speaker": "Aniru",
+            "text": "0,1,2 o 2-bai shite tashi naoshite!"
+          }
+        ]
+      },
+      "reward": "Seigyo puroguramu chippu"
+    }
+  ]
+}
