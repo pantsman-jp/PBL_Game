@@ -1,19 +1,19 @@
 # PBL_Game
 
-## Installation
+## インストール
 ```PowerShell
 > git clone https://github.com/pantsman-jp/PBL_Game
 ```
 
-## Usage
-Require `Python3`, `pyxel`.
+## 使い方
+`Python3`, `pyxel` が必要。
 
-Install `pyxel` via
+`pyxel` は以下でインストール。
 ```PowerShell
 > pip install pyxel
 ```
 
-To run
+実行方法は以下。**`/src` ディレクトリまで移動すること。**
 ```PowerShell
 > cd src
 > python src/main.py
@@ -29,7 +29,7 @@ To run
 > pyxel edit assets.pyxres
 ```
 
-公式URL
+公式URL  
 <https://github.com/kitao/pyxel/blob/main/docs/README.ja.md>
 
 ---
