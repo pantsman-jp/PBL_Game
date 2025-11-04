@@ -26,4 +26,4 @@ python src/main.py
 ```
 
 ---
-Copyright © 2025 pantsman, ISSA-Motomu, tanosou, osato03
+Copyright © 2025 pantsman, ISSA-Motomu, tanosou, osato03, nagata
