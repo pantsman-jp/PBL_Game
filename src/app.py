@@ -14,7 +14,9 @@ from core.talk import Talk
 class App:
     def __init__(self):
         # 画面初期化
-        px.init(128, 128, title="Tiny Quiz Field", display_scale=2)
+        px.init(
+            128, 128, title="Tiny Quiz Field", display_scale=2, font="fonts/k8x12S.bdf"
+        )
 
         # --- 将来的なアセット/BGM対応 ---
         # assets.pyxres にタイルや音楽を登録した後、有効化する：
