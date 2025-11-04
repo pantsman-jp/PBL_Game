@@ -6,17 +6,17 @@
 ```
 
 ## 使い方
-`Python3`, `pyxel` が必要。
+`Python3`, `Pyxel`, `Pillow` が必要。
 
 `pyxel` は以下でインストール。
 ```PowerShell
 > pip install pyxel
+> pip install Pillow
 ```
 
-実行方法は以下。**`/src` ディレクトリまで移動すること。**
+実行方法は以下。
 ```PowerShell
-> cd src
-> python main.py
+> python src/main.py
 ```
 
 ## 開発者へ
