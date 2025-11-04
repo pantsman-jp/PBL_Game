@@ -13,10 +13,9 @@
 > pip install pyxel
 ```
 
-実行方法は以下。**`/src` ディレクトリまで移動すること。**
+実行方法は以下。
 ```PowerShell
-> cd src
-> python main.py
+> python src/main.py
 ```
 
 ## 操作方法
@@ -25,9 +24,6 @@
 `s` : セーブ  
 
 ## 開発者へ
-### 注意
-**コミット時はディレクトリ位置に注意**
-
 ### Pyxel Editor の使い方
 **/src** ディレクトリまで移動してから実行すること。
 ```PowerShell
