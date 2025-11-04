@@ -1,5 +1,8 @@
 # ChangeLog of PBL_Game
 
+## v0.3.2 (2025-11-04)
+- `assets.pyxres` の追加
+
 ## v0.3.1 (2025-11-03)
 - `CHANGELOG.md` の日本語化
 - コードの説明を追加
