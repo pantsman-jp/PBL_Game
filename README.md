@@ -1,6 +1,9 @@
 # PBL_Game
 
-## インストール
+## 概要
+このゲームは、**宇宙工学・宇宙理学の面白さを高校生に紹介する** というコンセプトで開発されています。
+
+## インストール方法
 ```PowerShell
 > git clone https://github.com/pantsman-jp/PBL_Game
 ```
