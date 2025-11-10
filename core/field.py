@@ -71,7 +71,7 @@ class Field:
                 pygame.draw.rect(screen, color, (x, y, TILE - 2, TILE - 2))
 
         # NPC描画：dialogues.json にある position を元に描画
-        for key, data in self.app.talk.dialogues.items():
+        for [_, data] in self.app.talk.dialogues.items():
             pos = data.get("position")
             if not pos:
                 continue

@@ -1,6 +1,6 @@
 """
 システム管理 | core/system.py
-セーブ／ロードと将来的なBGM制御用フックを提供します．
+セーブ/ロードと将来的なBGM制御用フックを提供
 """
 
 from utils import save_json, load_json, SAVEFILE

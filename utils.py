@@ -1,6 +1,6 @@
 """
 汎用ユーティリティ | utils.py
-キー状態取得、JSON save/load を提供します．
+キー状態取得、JSON save/load
 """
 
 import pygame
@@ -20,7 +20,7 @@ class KeyTracker:
     def update(self):
         cur = pygame.key.get_pressed()
         pressed_once = {}
-        for name, key in {
+        for [name, key] in {
             "up": pygame.K_UP,
             "down": pygame.K_DOWN,
             "left": pygame.K_LEFT,

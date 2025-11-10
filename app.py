@@ -1,7 +1,8 @@
 """
-アプリケーションクラス（pygame版） | app.py
-ウィンドウ初期化、サブモジュール生成、メインループを担当します．
-シーン管理（タイトル／ゲーム本編）機能を追加．
+アプリケーションクラス | app.py
+
+ウィンドウ初期化、サブモジュール生成、メインループを担当
+シーン管理（タイトル／ゲーム本編）機能を追加
 """
 
 import os
@@ -87,9 +88,7 @@ class App:
             self._handle_events(events)
             self._update()
             self._draw()
-
             pygame.display.flip()
-
         pygame.quit()
         sys.exit()
 
@@ -109,7 +108,6 @@ class App:
                 # マウスクリックでゲーム開始
                 if ev.type == pygame.MOUSEBUTTONDOWN:
                     self.start_game()  # ゲーム本編の準備をしてシーン切り替え
-
         elif self.scene_state == SCENE_GAME:
             for ev in events:
                 if ev.type == pygame.KEYDOWN:
@@ -124,7 +122,6 @@ class App:
         if self.scene_state == SCENE_TITLE:
             # タイトル画面では特に更新処理なし (例: アニメーションなど)
             pass
-
         elif self.scene_state == SCENE_GAME:
             # (既存の更新処理)
             keys = self.key_tracker.update()  # 1フレーム押下検出
@@ -135,7 +132,6 @@ class App:
 
     def _draw(self):
         """画面描画"""
-
         # --- シーン別描画 ---
         if self.scene_state == SCENE_TITLE:
             # --- タイトル画面描画 ---

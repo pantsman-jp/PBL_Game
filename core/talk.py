@@ -1,6 +1,7 @@
 """
 会話・クイズ管理 | core/talk.py
-dialogues.json を読み込み、Zで進行、Qで離脱、矢印で選択、正解で報酬を付与します．
+
+../dialogues.json を読み込み、Z で進行、Q で離脱、矢印で選択、正解で報酬を付与
 """
 
 import os
@@ -24,11 +25,9 @@ class Talk:
         """会話とクイズの更新．Zで進行、Qで離脱、↑↓で選択"""
         if not (self.window_lines or self.quiz_mode or self.current_quiz):
             return
-
         if self.wait_frames > 0:
             self.wait_frames -= 1
             return
-
         if keys["q"]:
             self.window_lines = []
             self.current_quiz = None
@@ -78,7 +77,7 @@ class Talk:
 
     def try_talk(self):
         """プレイヤー位置に一致するNPCを探索し会話を開始する"""
-        for key, data in self.dialogues.items():
+        for [key, data] in self.dialogues.items():
             pos = data.get("position")
             if pos and (pos[0], pos[1]) == (self.app.x, self.app.y):
                 self.active = key

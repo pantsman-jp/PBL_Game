@@ -1,6 +1,7 @@
 """
 簡易ウィンドウ描画 | ui.py
-会話ウィンドウを作成します．
+
+会話ウィンドウを作成
 """
 
 import pygame
@@ -24,6 +25,6 @@ def draw_window(
     pygame.draw.rect(surface, (200, 200, 200), (x, y, w, h), 2)
     # テキスト行を描画
     line_h = font.get_linesize()
-    for i, line in enumerate(lines):
+    for [i, line] in enumerate(lines):
         surf = font.render(line, True, fg)
         surface.blit(surf, (x + 8, y + 8 + i * line_h))
