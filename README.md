@@ -5,7 +5,7 @@
 
 ## インストール方法
 ```PowerShell
-> git clone https://github.com/pantsman-jp/PBL_Game
+git clone https://github.com/pantsman-jp/PBL_Game
 ```
 
 ## 使い方
@@ -13,12 +13,12 @@
 
 `Pygame` は以下でインストール。
 ```PowerShell
-> pip install pygame
+pip install pygame
 ```
 
 実行方法は以下。
 ```PowerShell
-> python main.py
+python main.py
 ```
 
 ---
