@@ -22,7 +22,7 @@ class Field:
         self.dx = 0
         self.dy = 0
         self.offset = 0
-        self.speed = 0.5  # px/frame
+        self.speed = 1  # px/frame
         # 全体マップ（世界地図）アセット
         self.map_image = None
         map_img_path = os.path.join("img", "world_map.png")
@@ -64,37 +64,43 @@ class Field:
         # pygame.mixer.Sound("walk.wav").play()
 
     def draw(self, screen):
-        """背景グリッド、NPC、プレイヤーを描画"""
-        # 背景グリッド
-        # 世界地図を背景として描画
-        # プレイヤー位置を中心にマップをスクロール
-        # （self.app.x, self.app.y はプレイヤーのワールド座標）
-        offset_x = SCREEN_CENTER_X - self.app.x * TILE
-        offset_y = SCREEN_CENTER_Y - self.app.y * TILE
-        # マップをスクロール描画
-        screen.blit(self.map_image, (offset_x, offset_y))
+        """
+        背景マップ、NPC、プレイヤーの描画します。
+        プレイヤー移動中のスクロール量を全描画物に一貫して適用し、
+        かくつきを防止。
+        """
+        # プレイヤー移動方向に応じたスクロール量を算出
+        ox = self.offset * (-self.dx)
+        oy = self.offset * (-self.dy)
 
-        # NPC描画：dialogues.json にある position を元に描画
+        # 背景マップの基準位置を算出
+        base_x = SCREEN_CENTER_X - self.app.x * TILE
+        base_y = SCREEN_CENTER_Y - self.app.y * TILE
+
+        # 背景マップをスクロール量を加えて描画
+        screen.blit(self.map_image, (base_x + ox, base_y + oy))
+
+        # NPC を全て描画
         for [_, data] in self.app.talk.dialogues.items():
             pos = data.get("position")
             if not pos:
                 continue
+
             nx, ny = pos[0], pos[1]
-            # ワールド座標 -> スクリーン座標（プレイヤーを中心に）
-            screen_x = SCREEN_CENTER_X + (nx - self.app.x) * TILE
-            screen_y = (
-                SCREEN_CENTER_Y
-                + (ny - self.app.y) * TILE
-                - (self.offset if self.dy > 0 else 0)
-            )
-            # 単色矩形でNPCを表示（将来はスプライトに差し替え）
+
+            # NPC のスクリーン座標を算出
+            screen_x = SCREEN_CENTER_X + (nx - self.app.x) * TILE + ox
+            screen_y = SCREEN_CENTER_Y + (ny - self.app.y) * TILE + oy
+
+            # NPC を描画
             pygame.draw.rect(screen, (200, 120, 80), (screen_x, screen_y, TILE, TILE))
-            # NPCのラベル（1行目表示）
+
+            # NPC のラベルを描画
             label = data.get("lines", [""])[0]
             label_surf = self.app.font.render(label[:12], True, (255, 255, 255))
             screen.blit(label_surf, (screen_x, screen_y - 18))
 
-        # プレイヤー描画（中央）
+        # プレイヤーをスクリーン中央に描画
         px = SCREEN_CENTER_X
         py = SCREEN_CENTER_Y
         pygame.draw.rect(screen, (120, 200, 240), (px, py, TILE, TILE))
