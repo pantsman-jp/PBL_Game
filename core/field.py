@@ -17,31 +17,31 @@ SCREEN_CENTER_Y = 200  # プレイヤーを中心よりやや上に配置
 class Field:
     def __init__(self, app):
         self.app = app
-        # 移動アニメーション用
         self.moving = False
         self.dx = 0
         self.dy = 0
         self.offset = 0
-        self.speed = 1  # px/frame
-        # 全体マップ（世界地図）アセット
+        self.speed = 1
         self.map_image = None
-        map_img_path = os.path.join("img", "world_map.png")
-        if os.path.isfile(map_img_path):
-            self.map_image = pygame.image.load(map_img_path).convert()
+        self.load_map("img/world_map.png")
 
     def update(self, keys):
-        """移動の入力とアニメーション処理"""
         if self.moving:
             self.offset += self.speed
             if self.offset >= TILE:
-                # 移動完了
                 self.offset = 0
                 self.moving = False
                 self.app.x += self.dx
                 self.app.y += self.dy
+
+                # ---- 画面遷移判定 ----
+                if (self.app.x == 0) and (self.app.y == 0):
+                    self.load_map("img/transition.jpg")
+                    self.app.x = self.map_w // 2
+                    self.app.y = self.map_h // 2
+                # -----------------------
             return
 
-        # 入力を受けて移動開始
         if keys["up"]:
             self.start_move(0, -1)
         elif keys["down"]:
@@ -51,7 +51,6 @@ class Field:
         elif keys["right"]:
             self.start_move(1, 0)
         elif keys["z"]:
-            # Zで会話（会話開始は talk.try_talk() 内で位置照合）
             self.app.talk.try_talk()
 
     def start_move(self, dx, dy):
@@ -65,7 +64,7 @@ class Field:
         ny = self.app.y + dy
 
         # 範囲外なら移動しない
-        if nx < 0 or ny < 0 or nx >= map_w or ny >= map_h:
+        if (nx < 0) or (ny < 0) or (nx >= map_w) or (ny >= map_h):
             return
 
         # 範囲内なら移動開始
@@ -115,3 +114,14 @@ class Field:
         px = SCREEN_CENTER_X
         py = SCREEN_CENTER_Y
         pygame.draw.rect(screen, (120, 200, 240), (px, py, TILE, TILE))
+
+    def load_map(self, path):
+        if os.path.isfile(path):
+            self.map_image = pygame.image.load(path).convert()
+            w, h = self.map_image.get_width(), self.map_image.get_height()
+            self.map_w = w // TILE
+            self.map_h = h // TILE
+        else:
+            self.map_image = None
+            self.map_w = 0
+            self.map_h = 0
