@@ -7,9 +7,9 @@ import pygame
 import os
 
 # グリッドと画面描画設定
-TILE = 32  # 1マスのサイズ（ピクセル）
-GRID_W = 16  # 横マス数（論理）
-GRID_H = 12  # 縦マス数（論理）
+TILE = 12  # 1マスのサイズ（ピクセル）
+GRID_W = 1000  # 横マス数
+GRID_H = 800  # 縦マス数
 SCREEN_CENTER_X = 320
 SCREEN_CENTER_Y = 200  # プレイヤーを中心よりやや上に配置
 
@@ -21,7 +21,7 @@ class Field:
         self.dx = 0
         self.dy = 0
         self.offset = 0
-        self.speed = 1
+        self.speed = 4 #1フレームあたりに移動するピクセルの数
         self.map_image = None
         self.load_map("img/world_map.png")
 
@@ -42,31 +42,39 @@ class Field:
                 # -----------------------
             return
 
-        if keys["up"]:
+        # 長押しで連続移動させるため、ここではpygame.key.get_pressed()を用いて
+        # 押下保持（held）を判定する。会話zは単押しのままkeys["z"]
+        pressed = pygame.key.get_pressed()
+        up = pressed[pygame.K_UP]
+        down = pressed[pygame.K_DOWN]
+        left = pressed[pygame.K_LEFT]
+        right = pressed[pygame.K_RIGHT]
+
+        if up:
             self.start_move(0, -1)
-        elif keys["down"]:
+        elif down:
             self.start_move(0, 1)
-        elif keys["left"]:
+        elif left:
             self.start_move(-1, 0)
-        elif keys["right"]:
+        elif right:
             self.start_move(1, 0)
-        elif keys["z"]:
+        elif keys.get("z"):
             self.app.talk.try_talk()
 
     def start_move(self, dx, dy):
-        """移動開始処理．背景画像の範囲外に出ないように制限します．"""
+        """
+        移動開始処理．
+        背景画像の範囲外に出ないように制限します．
+        """
         # 背景マップのタイル数を算出
         map_w = self.map_image.get_width() // TILE
         map_h = self.map_image.get_height() // TILE
-
         # 目的地タイル座標
         nx = self.app.x + dx
         ny = self.app.y + dy
-
         # 範囲外なら移動しない
         if (nx < 0) or (ny < 0) or (nx >= map_w) or (ny >= map_h):
             return
-
         # 範囲内なら移動開始
         self.dx = dx
         self.dy = dy

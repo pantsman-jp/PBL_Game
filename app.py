@@ -14,7 +14,7 @@ from core.field import Field
 from core.talk import Talk
 
 # ウィンドウサイズ
-WIDTH, HEIGHT = 640, 480
+WIDTH, HEIGHT = 900, 700
 FPS = 60
 
 # シーン定義
