@@ -7,7 +7,7 @@ import pygame
 import os
 import math
 
-TILE = 12
+TILE = 16
 SCREEN_CENTER_X = 320
 SCREEN_CENTER_Y = 200
 
@@ -28,6 +28,7 @@ class Field:
         self.transition_max_radius = math.hypot(SCREEN_CENTER_X, SCREEN_CENTER_Y)
         self.transition_speed = 4  # ゆっくりに設定
         self.load_map("img/world_map.png")
+        self.load_player("img/player1.png")
 
     def update(self, keys):
         if self.transitioning:
@@ -72,6 +73,7 @@ class Field:
         base_x = SCREEN_CENTER_X - self.app.x * TILE
         base_y = SCREEN_CENTER_Y - self.app.y * TILE
         screen.blit(self.map_image, (base_x + ox, base_y + oy))
+        screen.blit(self.player_image, self.player_rect)
 
         for [_, data] in self.app.talk.dialogues.items():
             pos = data.get("position")
@@ -84,10 +86,6 @@ class Field:
             label = data.get("lines", [""])[0]
             label_surf = self.app.font.render(label[:12], True, (255, 255, 255))
             screen.blit(label_surf, (screen_x, screen_y - 18))
-
-        px = SCREEN_CENTER_X
-        py = SCREEN_CENTER_Y
-        pygame.draw.rect(screen, (120, 200, 240), (px, py, TILE, TILE))
 
         # アイリスアウト/イン描画
         if self.transitioning:
@@ -140,3 +138,11 @@ class Field:
             self.map_image = None
             self.map_w = 0
             self.map_h = 0
+
+    def load_player(self, path):
+        if os.path.isfile(path):
+            self.player_image = pygame.image.load(path).convert_alpha()
+            self.player_image = pygame.transform.scale(self.player_image, (TILE, TILE))
+            self.player_rect = self.player_image.get_rect(
+                topleft=(SCREEN_CENTER_X, SCREEN_CENTER_Y)
+            )
