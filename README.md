@@ -9,7 +9,7 @@ git clone https://github.com/pantsman-jp/PBL_Game
 ```
 
 ## 使い方
-`Python3`, `Pygame` が必要。
+`Python3.13.9`, `Pygame2.6.1` が必要。
 
 `Pygame` は以下でインストール。
 ```PowerShell
