@@ -28,7 +28,8 @@ class Field:
         self.transition_max_radius = math.hypot(SCREEN_CENTER_X, SCREEN_CENTER_Y)
         self.transition_speed = 4  # ゆっくりに設定
         self.load_map("img/world_map.png")
-        self.load_player("img/player1.png")
+        self.load_player("img/player_front.png")
+        self.dir = "front"
 
     def update(self, keys):
         if self.transitioning:
@@ -62,6 +63,15 @@ class Field:
         ny = self.app.y + dy
         if nx < 0 or ny < 0 or nx >= self.map_w or ny >= self.map_h:
             return
+        # 入力した方向キーに合わせて向いている方向を変更
+        if dy == +1:
+            self.dir = "front"
+        elif dy == -1:
+            self.dir = "back"
+        elif dx == +1:
+            self.dir = "right"
+        elif dx == -1:
+            self.dir = "left"
         self.dx = dx
         self.dy = dy
         self.moving = True
@@ -73,6 +83,18 @@ class Field:
         base_x = SCREEN_CENTER_X - self.app.x * TILE
         base_y = SCREEN_CENTER_Y - self.app.y * TILE
         screen.blit(self.map_image, (base_x + ox, base_y + oy))
+
+        # キャラが向いている方向に合わせて画像表示
+        if self.dir == "front":
+            self.player_image = self.player_front
+        elif self.dir == "back":
+            self.player_image = self.player_back
+        elif self.dir == "right":
+            self.player_image = self.player_right
+        elif self.dir == "left":
+            self.player_image = self.player_left
+        screen.blit(self.player_image, self.player_rect)
+
         screen.blit(self.player_image, self.player_rect)
 
         for [_, data] in self.app.talk.dialogues.items():
@@ -141,8 +163,21 @@ class Field:
 
     def load_player(self, path):
         if os.path.isfile(path):
-            self.player_image = pygame.image.load(path).convert_alpha()
-            self.player_image = pygame.transform.scale(self.player_image, (TILE, TILE))
+            self.player_front = pygame.image.load(path).convert_alpha()
+            self.player_front = pygame.transform.scale(self.player_front, (TILE, TILE))
+
+            back_path = "img/player_back.png"
+            self.player_back = pygame.image.load(back_path).convert_alpha()
+            self.player_back = pygame.transform.scale(self.player_back, (TILE, TILE))
+
+            right_path = "img/player_right.png"
+            self.player_right = pygame.image.load(right_path).convert_alpha()
+            self.player_right = pygame.transform.scale(self.player_right, (TILE, TILE))
+
+            self.player_left = pygame.transform.flip(self.player_right, True, False)
+
+            self.player_image = self.player_front
+
             self.player_rect = self.player_image.get_rect(
                 topleft=(SCREEN_CENTER_X, SCREEN_CENTER_Y)
             )
