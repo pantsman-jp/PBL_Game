@@ -55,13 +55,24 @@ class Field:
             self.app.talk.try_talk()
 
     def start_move(self, dx, dy):
-        # 簡易に衝突判定なしで移動を開始
+        """移動開始処理．背景画像の範囲外に出ないように制限します．"""
+        # 背景マップのタイル数を算出
+        map_w = self.map_image.get_width() // TILE
+        map_h = self.map_image.get_height() // TILE
+
+        # 目的地タイル座標
+        nx = self.app.x + dx
+        ny = self.app.y + dy
+
+        # 範囲外なら移動しない
+        if nx < 0 or ny < 0 or nx >= map_w or ny >= map_h:
+            return
+
+        # 範囲内なら移動開始
         self.dx = dx
         self.dy = dy
         self.moving = True
         self.offset = 0
-        # 将来的に歩行SE
-        # pygame.mixer.Sound("walk.wav").play()
 
     def draw(self, screen):
         """
