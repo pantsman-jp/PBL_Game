@@ -1,6 +1,5 @@
 """
 アプリケーションクラス | app.py
-
 ウィンドウ初期化、サブモジュール生成、メインループを担当
 シーン管理（タイトル／ゲーム本編）機能を追加
 """
@@ -26,17 +25,38 @@ class App:
     def __init__(self):
         # pygame 初期化
         pygame.init()
-        self.key_tracker = KeyTracker()
+        # サウンド初期化（短い効果音用）
+        try:
+            pygame.mixer.init()
+        except Exception:
+            # Mixer 初期化失敗してもクラッシュさせない
+            pass
+        # 効果音読み込み（存在しなければ None）
+        sdir = os.path.join("sounds")
 
+        def _load_sound(name):
+            """
+            効果音を読み込む補助関数(issa)
+            """
+            p = os.path.join(sdir, name)
+            if os.path.isfile(p):
+                try:
+                    return pygame.mixer.Sound(p)
+                except Exception:
+                    return None
+            return None
+
+        self.sfx_inv_open = _load_sound("chestopen.mp3")
+        self.sfx_inv_close = _load_sound("chestclose.mp3")
+
+        self.key_tracker = KeyTracker()
         # --- BGM/SE 対応 ---
         # (シーン切り替え時に音楽を再生すると良いでしょう)
         # pygame.mixer.init()
-
         # ウィンドウ作成
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Tiny Quiz Field - pygame")
         self.clock = pygame.time.Clock()
-
         # --- フォント設定 ---
         font_path = os.path.join("assets", "fonts", "NotoSansJP-Regular.otf")
         if os.path.isfile(font_path):
@@ -53,23 +73,23 @@ class App:
         title_img_path = os.path.join("img", "960.jpg")
         if os.path.isfile(title_img_path):
             self.title_image = pygame.image.load(title_img_path).convert()
-
         # --- ゲーム状態 (SCENE_GAME で使用) ---
         self.x = 8  # グリッド座標
         self.y = 8
         self.items = []
-
+        self.inventory_open = False
         # --- サブシステム (SCENE_GAME で使用) ---
         self.system = System(self)
         self.field = Field(self)
         self.talk = Talk(self)
-
         # --- シーン管理 ---
         self.scene_state = SCENE_TITLE  # 初期シーンをタイトルに設定
         self.running = True
 
     def start_game(self):
-        """ゲーム本編の初期化（セーブ読み込みなど）"""
+        """
+        ゲーム本編の初期化（セーブ読み込みなど）
+        """
         # セーブデータ読み込み（存在すれば復元）
         self.system.load()
         self.scene_state = SCENE_GAME
@@ -78,7 +98,9 @@ class App:
         # pygame.mixer.music.play(-1)
 
     def run(self):
-        """メインループを開始します"""
+        """
+        メインループを開始します
+        """
         while self.running:
             # dt = self.clock.tick(FPS)
             self.clock.tick(FPS)  # FPS制御
@@ -94,13 +116,12 @@ class App:
 
     def _handle_events(self, events):
         """pygame イベント処理"""
-
         # --- 全シーン共通イベント ---
         for ev in events:
             if ev.type == pygame.QUIT:
                 self.running = False
             if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
-                self.running = False  # ESCでどこからでも終了
+                self.running = False  # ESCで終了
 
         # --- シーン別イベント ---
         if self.scene_state == SCENE_TITLE:
@@ -114,6 +135,17 @@ class App:
                     # グローバルキー：Sでセーブ
                     if ev.key == pygame.K_s:
                         self.system.save()
+                    # Iキーでインベントリ開閉
+                    if ev.key == pygame.K_i:
+                        self.inventory_open = not self.inventory_open
+                        # 効果音を再生（存在すれば）
+                        try:
+                            if self.inventory_open and self.sfx_inv_open:
+                                self.sfx_inv_open.play()
+                            elif (not self.inventory_open) and self.sfx_inv_close:
+                                self.sfx_inv_close.play()
+                        except Exception:
+                            pass
 
     def _update(self):
         """1フレームの更新"""
@@ -168,3 +200,25 @@ class App:
 
             # 会話ウィンドウは talk.draw() が行う
             self.talk.draw(self.screen, self.font)
+
+            # インベントリ表示（Iでトグル）-------------------
+            if self.inventory_open:
+                overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+                overlay.fill((0, 0, 0, 150))
+                self.screen.blit(overlay, (0, 0))
+                box_w, box_h = 480, 360
+                bx = (WIDTH - box_w) // 2
+                by = (HEIGHT - box_h) // 2
+                pygame.draw.rect(self.screen, (30, 30, 40), (bx, by, box_w, box_h))
+                pygame.draw.rect(
+                    self.screen, (200, 200, 200), (bx, by, box_w, box_h), 2
+                )
+                title_surf = self.title_font.render(
+                    "INVENTORY (I to close)", True, (255, 255, 255)
+                )
+                self.screen.blit(title_surf, (bx + 12, by + 8))
+                # アイテムリスト描画
+                for i, item in enumerate(self.items):
+                    it_surf = self.font.render(f"- {item}", True, (220, 220, 220))
+                    self.screen.blit(it_surf, (bx + 16, by + 48 + i * 22))
+            # -----------------------------------------------
