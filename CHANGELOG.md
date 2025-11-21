@@ -35,13 +35,13 @@
   └── README.md
   ```
 
-  </details><br>
+  </details>
 
 - タイトル画像のファイル名を変更 ; `960.jpg` -> `title.jpg`
 - `assets/` フォルダを追加し、ここに `img/`, `sounds/`, `dialogues/dialogues.json`を移動
 - `src/` にソースコードを移動
 - NPC 描画サイズを調整できるように修正
-- `dialogues.json` の座標を 2 要素形式に統一
+- `dialogues/dialogues.json` の NPC 座標を 2 要素形式に変更
 - `field.py`, `talk.py` 内の NPC 表示・会話処理の修正
 
 ## v1.7.0 (2025-11-18)
