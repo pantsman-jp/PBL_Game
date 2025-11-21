@@ -1,4 +1,4 @@
-# CHANGELOG of PBL_Game
+# CHANGELOG of PBL-Game
 
 ## v1.8.0 (2025-11-21)
 - **フォルダ構造の変更**
