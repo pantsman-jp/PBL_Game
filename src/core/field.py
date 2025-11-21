@@ -1,6 +1,6 @@
 """
 フィールド管理 | core/field.py
-プレイヤー移動、NPC 描画、マップ遷移、画面遷移時アニメーション
+プレイヤー移動、NPC描画、マップ遷移、画面遷移時アニメーション
 """
 
 import pygame
@@ -26,9 +26,14 @@ class Field:
         self.transition_target = None
         self._transition_stage = None
         self.transition_max_radius = math.hypot(SCREEN_CENTER_X, SCREEN_CENTER_Y)
-        self.transition_speed = 4  # ゆっくりに設定
-        self.load_map("img/world_map.png")
-        self.load_player("img/player_front.png")
+        self.transition_speed = 4
+
+        self.BASE_DIR = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", "..", "assets")
+        )
+
+        self.load_map(os.path.join(self.BASE_DIR, "img", "world_map.png"))
+        self.load_player()
         self.dir = "front"
 
     def update(self, keys):
@@ -63,7 +68,6 @@ class Field:
         ny = self.app.y + dy
         if nx < 0 or ny < 0 or nx >= self.map_w or ny >= self.map_h:
             return
-        # 入力した方向キーに合わせて向いている方向を変更
         if dy == +1:
             self.dir = "front"
         elif dy == -1:
@@ -78,13 +82,14 @@ class Field:
         self.offset = 0
 
     def draw(self, screen):
+        if not self.map_image:
+            return
         ox = self.offset * (-self.dx)
         oy = self.offset * (-self.dy)
         base_x = SCREEN_CENTER_X - self.app.x * TILE
         base_y = SCREEN_CENTER_Y - self.app.y * TILE
         screen.blit(self.map_image, (base_x + ox, base_y + oy))
 
-        # キャラが向いている方向に合わせて画像表示
         if self.dir == "front":
             self.player_image = self.player_front
         elif self.dir == "back":
@@ -95,25 +100,27 @@ class Field:
             self.player_image = self.player_left
         screen.blit(self.player_image, self.player_rect)
 
-        screen.blit(self.player_image, self.player_rect)
-
-        for [_, data] in self.app.talk.dialogues.items():
+        # NPC描画
+        for _, data in self.app.talk.dialogues.items():
             pos = data.get("position")
-            if not pos:
+            if not pos or len(pos) < 2:
                 continue
             nx, ny = pos[0], pos[1]
             screen_x = SCREEN_CENTER_X + (nx - self.app.x) * TILE + ox
             screen_y = SCREEN_CENTER_Y + (ny - self.app.y) * TILE + oy
-            pygame.draw.rect(screen, (200, 120, 80), (screen_x, screen_y, TILE, TILE))
-            label = data.get("lines", [""])[0]
-            label_surf = self.app.font.render(label[:12], True, (255, 255, 255))
-            screen.blit(label_surf, (screen_x, screen_y - 18))
+            # NPCを2*TILEサイズで描画
+            npc_size = 12
+            pygame.draw.rect(
+                screen, (200, 120, 80), (screen_x, screen_y, npc_size, npc_size)
+            )
+            lines = data.get("lines", [""])
+            if lines:
+                label_surf = self.app.font.render(lines[0][:12], True, (255, 255, 255))
+                screen.blit(label_surf, (screen_x, screen_y - 18))
 
-        # アイリスアウト/イン描画
         if self.transitioning:
             overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
             overlay.fill((0, 0, 0, 255))
-            # 円形を透明にする
             pygame.draw.circle(
                 overlay,
                 (0, 0, 0, 0),
@@ -124,7 +131,7 @@ class Field:
 
     def _check_transition_trigger(self):
         if self.app.x == 0 and self.app.y == 0:
-            self._start_transition("img/transition.jpg")
+            self._start_transition(os.path.join(self.BASE_DIR, "img", "transition.jpg"))
 
     def _start_transition(self, path):
         if not os.path.isfile(path):
@@ -161,23 +168,34 @@ class Field:
             self.map_w = 0
             self.map_h = 0
 
-    def load_player(self, path):
-        if os.path.isfile(path):
-            self.player_front = pygame.image.load(path).convert_alpha()
+    def load_player(self):
+        front = os.path.join(self.BASE_DIR, "img", "player_front.png")
+        back = os.path.join(self.BASE_DIR, "img", "player_back.png")
+        right = os.path.join(self.BASE_DIR, "img", "player_right.png")
+
+        if os.path.isfile(front):
+            self.player_front = pygame.image.load(front).convert_alpha()
             self.player_front = pygame.transform.scale(self.player_front, (TILE, TILE))
+        else:
+            self.player_front = pygame.Surface((TILE, TILE))
+            self.player_front.fill((255, 0, 0))
 
-            back_path = "img/player_back.png"
-            self.player_back = pygame.image.load(back_path).convert_alpha()
+        if os.path.isfile(back):
+            self.player_back = pygame.image.load(back).convert_alpha()
             self.player_back = pygame.transform.scale(self.player_back, (TILE, TILE))
+        else:
+            self.player_back = pygame.Surface((TILE, TILE))
+            self.player_back.fill((0, 255, 0))
 
-            right_path = "img/player_right.png"
-            self.player_right = pygame.image.load(right_path).convert_alpha()
+        if os.path.isfile(right):
+            self.player_right = pygame.image.load(right).convert_alpha()
             self.player_right = pygame.transform.scale(self.player_right, (TILE, TILE))
+        else:
+            self.player_right = pygame.Surface((TILE, TILE))
+            self.player_right.fill((0, 0, 255))
 
-            self.player_left = pygame.transform.flip(self.player_right, True, False)
-
-            self.player_image = self.player_front
-
-            self.player_rect = self.player_image.get_rect(
-                topleft=(SCREEN_CENTER_X, SCREEN_CENTER_Y)
-            )
+        self.player_left = pygame.transform.flip(self.player_right, True, False)
+        self.player_image = self.player_front
+        self.player_rect = self.player_image.get_rect(
+            topleft=(SCREEN_CENTER_X, SCREEN_CENTER_Y)
+        )

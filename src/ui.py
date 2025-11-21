@@ -20,11 +20,9 @@ def draw_window(
     rect: (x, y, w, h)
     """
     x, y, w, h = rect
-    # 背景
     pygame.draw.rect(surface, bgcolor, (x, y, w, h))
     pygame.draw.rect(surface, (200, 200, 200), (x, y, w, h), 2)
-    # テキスト行を描画
     line_h = font.get_linesize()
-    for [i, line] in enumerate(lines):
+    for i, line in enumerate(lines):
         surf = font.render(line, True, fg)
         surface.blit(surf, (x + 8, y + 8 + i * line_h))

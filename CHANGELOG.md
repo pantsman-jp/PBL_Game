@@ -1,5 +1,49 @@
 # CHANGELOG of PBL_Game
 
+## v1.8.0 (2025-11-21)
+- **フォルダ構造の変更**
+  <details>
+  <summary>フォルダ構造を表示する</summary>
+
+  ```
+  PBL_Game
+  ├── assets
+  │   ├── dialogues
+  │   │   └── dialogues.json
+  │   ├── img
+  │   │   ├── player_back.png
+  │   │   ├── player_front.png
+  │   │   ├── player_right.png
+  │   │   ├── title.jpg
+  │   │   ├── transition.jpg
+  │   │   └── world_map.png
+  │   └── sounds
+  │       ├── chestclese.mp3
+  │       └── chestopen.mp3
+  ├── src
+  │   ├── core
+  │   │   ├── field.py
+  │   │   ├── system.py
+  │   │   └── talk.py
+  │   ├── app.py
+  │   ├── main.py
+  │   ├── ui.py
+  │   └── utils.py
+  ├── .gitignore
+  ├── CHANGELOG.md
+  ├── LICENSE
+  └── README.md
+  ```
+
+  </details><br>
+
+- タイトル画像のファイル名を変更 ; `960.jpg` -> `title.jpg`
+- `assets/` フォルダを追加し、ここに `img/`, `sounds/`, `dialogues/dialogues.json`を移動
+- `src/` にソースコードを移動
+- NPC 描画サイズを調整できるように修正
+- `dialogues.json` の座標を 2 要素形式に統一
+- `field.py`, `talk.py` 内の NPC 表示・会話処理の修正
+
 ## v1.7.0 (2025-11-18)
 - プレイキャラクターの画像を移動方向に合わせて表示
 - `player_front.png`, `player_back.png`, `player_right.png`のプレイキャラクターの前後左右画像を追加
