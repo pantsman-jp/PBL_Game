@@ -18,7 +18,7 @@
   │   │   ├── transition.jpg
   │   │   └── world_map.png
   │   └── sounds
-  │       ├── chestclese.mp3
+  │       ├── chestclose.mp3
   │       └── chestopen.mp3
   ├── src
   │   ├── core
