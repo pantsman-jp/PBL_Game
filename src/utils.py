@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 SAVEFILE = "save.json"
-DIALOGUES = "dialogues.json"
+DIALOGUES = "assets/dialogues/dialogues.json"
 
 
 class KeyTracker:
