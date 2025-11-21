@@ -5,7 +5,7 @@
 
 ## インストール方法
 ```
-git clone https://github.com/pantsman-jp/PBL_Game
+git clone https://github.com/pantsman-jp/PBL-Game
 ```
 
 ## 使い方
@@ -18,7 +18,7 @@ pip install pygame
 
 実行方法は以下。
 ```
-python src/main.py
+python -m src.main
 ```
 
 ---
