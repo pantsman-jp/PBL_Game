@@ -1,5 +1,9 @@
 # CHANGELOG of PBL-Game
 
+## v1.9.0 (2025-11-22)
+- BGM 追加
+- BGM ファイルは `assets/sounds/` に入れる
+
 ## v1.8.0 (2025-11-21)
 - **フォルダ構造の変更**
   <details>
