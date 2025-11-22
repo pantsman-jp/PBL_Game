@@ -94,14 +94,17 @@ class Talk:
 
     def try_talk(self):
         """
-        プレイヤー位置に一致するNPCを探索して会話開始
+        プレイヤー位置の四近傍にいるNPCを探索して会話開始
         """
-        for [key, data] in self.dialogues.items():
+        px, py = self.app.x, self.app.y
+        for key, data in self.dialogues.items():
             pos = data.get("position")
-            if pos and (pos[0], pos[1]) == (self.app.x, self.app.y):
-                self.active = key
-                self.open_dialog(data)
-                return
+            if pos:
+                nx, ny = pos[0], pos[1]
+                if abs(nx - px) + abs(ny - py) == 1:  # 四近傍判定
+                    self.active = key
+                    self.open_dialog(data)
+                    return
 
     def open_dialog(self, data):
         """
