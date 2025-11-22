@@ -1,6 +1,6 @@
 """
 フィールド管理 | core/field.py
-プレイヤー移動、NPC描画、マップ遷移、画面遷移時アニメーション
+プレイヤー移動、NPC描画、マップ遷移、画面遷移時アニメーション、BGM管理
 """
 
 import pygame
@@ -265,6 +265,16 @@ class Field:
         for e in data.get("exits", []):
             key = (e["x"], e["y"])
             self.current_exits[key] = e
+
+        # --- BGM再生 ---
+        bgm_file = data.get("bgm", "")
+        if bgm_file:
+            bgm_path = os.path.join(self.BASE_DIR, "sounds", bgm_file)
+            if os.path.isfile(bgm_path):
+                try:
+                    self.app.system.play_bgm(bgm_path)
+                except Exception as e:
+                    print("BGM再生エラー:", e)
 
     def load_player(self):
         front = os.path.join(self.BASE_DIR, "img", "player_front.png")

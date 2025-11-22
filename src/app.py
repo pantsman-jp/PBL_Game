@@ -1,6 +1,6 @@
 """
 アプリケーションクラス | src/app.py
-ウィンドウ初期化、サブモジュール生成、メインループを担当
+ウィンドウ初期化、サブモジュール生成、BGM再生、メインループを担当
 """
 
 import os
@@ -26,33 +26,16 @@ class App:
         except Exception:
             pass
 
-        sdir = os.path.join(BASE_DIR, "sounds")
-
-        def _sound_path(name):
-            return os.path.join(sdir, name)
-
         self.system = System(self)
-        bgm_file = _sound_path("main_bgm.mp3")
-        if os.path.isfile(bgm_file):
-            self.system.play_bgm(bgm_file)
 
-        def _load_sound(name):
-            p = _sound_path(name)
-            if os.path.isfile(p):
-                try:
-                    return pygame.mixer.Sound(p)
-                except Exception:
-                    return None
-            return None
-
-        self.sfx_inv_open = _load_sound("chestopen.mp3")
-        self.sfx_inv_close = _load_sound("chestclese.mp3")
-
+        # --- BGM初期再生（タイトル用や初期マップ用） ---
+        # マップごとにBGMは Field.load_map で再生されます
         self.key_tracker = KeyTracker()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Tiny Quiz Field - pygame")
         self.clock = pygame.time.Clock()
 
+        # --- フォント設定 ---
         font_path = os.path.join(BASE_DIR, "fonts", "NotoSansJP-Regular.otf")
         if os.path.isfile(font_path):
             self.font = pygame.font.Font(font_path, 16)
@@ -63,6 +46,7 @@ class App:
             self.title_font = pygame.font.SysFont("meiryo", 32)
             self.prompt_font = pygame.font.SysFont("meiryo", 20)
 
+        # --- タイトル画像 ---
         title_img_path = os.path.join(BASE_DIR, "img", "title.jpg")
         self.title_image = (
             pygame.image.load(title_img_path).convert()
@@ -70,19 +54,35 @@ class App:
             else None
         )
 
+        # --- プレイヤー初期座標とインベントリ ---
         self.x = 8
         self.y = 8
         self.items = []
         self.inventory_open = False
 
+        # --- サブモジュール生成 ---
         self.field = Field(self)
         self.talk = Talk(self)
 
         self.scene_state = SCENE_TITLE
         self.running = True
 
+        # --- 効果音ロード ---
+        def _load_sound(name):
+            p = os.path.join(BASE_DIR, "sounds", name)
+            if os.path.isfile(p):
+                try:
+                    return pygame.mixer.Sound(p)
+                except Exception:
+                    return None
+            return None
+
+        self.sfx_inv_open = _load_sound("chestopen.mp3")
+        self.sfx_inv_close = _load_sound("chestclose.mp3")
+
     def start_game(self):
-        self.system.load()
+        self.field.load_map("world")  # 初期マップ
+        self.field.load_player()
         self.scene_state = SCENE_GAME
 
     def run(self):
