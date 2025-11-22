@@ -13,10 +13,8 @@ from .core.talk import Talk
 
 WIDTH, HEIGHT = 900, 700
 FPS = 60
-
 SCENE_TITLE = 0
 SCENE_GAME = 1
-
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets"))
 
 
@@ -30,8 +28,16 @@ class App:
 
         sdir = os.path.join(BASE_DIR, "sounds")
 
+        def _sound_path(name):
+            return os.path.join(sdir, name)
+
+        self.system = System(self)
+        bgm_file = _sound_path("main_bgm.mp3")
+        if os.path.isfile(bgm_file):
+            self.system.play_bgm(bgm_file)
+
         def _load_sound(name):
-            p = os.path.join(sdir, name)
+            p = _sound_path(name)
             if os.path.isfile(p):
                 try:
                     return pygame.mixer.Sound(p)
@@ -69,7 +75,6 @@ class App:
         self.items = []
         self.inventory_open = False
 
-        self.system = System(self)
         self.field = Field(self)
         self.talk = Talk(self)
 
