@@ -1,9 +1,13 @@
 # CHANGELOG of PBL-Game
 
 ## v2.0.0 (2025-11-22-issa)
-- assets/dataのフォルダ作成
+- `assets/data`のフォルダ作成
+  - `maps.json`のリストをもとに、障害物判定、遷移先・元の座標、マップ画像を認識
+  - `dialogues.json`に新たにmap_idのリストを加えてmap名と紐付
 - 画面左上に現在の座標を表示
-- field.pyを大幅に書き換え、jsonをもとにmap遷移するアルゴリズムへ
+  - 座標情報をもとにjsonに画面遷移先を書く
+- `field.py`を大幅に書換、jsonをもとにmap遷移するアルゴリズム
+
 ## v1.8.0 (2025-11-21)
 - **フォルダ構造の変更**
   <details>
