@@ -6,6 +6,7 @@
 import pygame
 import os
 import math
+from ..utils import load_json  # JSON読み込み用
 
 TILE = 16
 SCREEN_CENTER_X = 320
@@ -21,18 +22,30 @@ class Field:
         self.offset = 0
         self.speed = 4
         self.map_image = None
+
+        # 遷移アニメーション用変数-----
         self.transitioning = False
         self.transition_radius = 0
-        self.transition_target = None
+        self.transition_target_map_id = None  # 次のマップID
+        self.transition_dest_pos = None  # 次の座標 (x, y)
         self._transition_stage = None
         self.transition_max_radius = math.hypot(SCREEN_CENTER_X, SCREEN_CENTER_Y)
         self.transition_speed = 4
-
+        # -----------------------------
         self.BASE_DIR = os.path.abspath(
             os.path.join(os.path.dirname(__file__), "..", "..", "assets")
         )
 
-        self.load_map(os.path.join(self.BASE_DIR, "img", "world_map.png"))
+        # --- マップデータの読み込み ---
+        maps_path = os.path.join(self.BASE_DIR, "data", "maps.json")
+        self.map_data = load_json(maps_path) or {}
+
+        self.current_map_id = None
+        self.current_walls = set()  # 高速検索用
+        self.current_exits = {}  # 高速検索用 {(x,y): data}
+
+        # 初期マップロード (ID指定)
+        self.load_map("world")
         self.load_player()
         self.dir = "front"
 
@@ -48,7 +61,8 @@ class Field:
                 self.moving = False
                 self.app.x += self.dx
                 self.app.y += self.dy
-                self._check_transition_trigger()
+                # 移動完了後にイベントチェック
+                self._check_map_event()
             return
 
         pressed = pygame.key.get_pressed()
@@ -66,8 +80,38 @@ class Field:
     def start_move(self, dx, dy):
         nx = self.app.x + dx
         ny = self.app.y + dy
+
+        # 1. 画面外チェック
         if nx < 0 or ny < 0 or nx >= self.map_w or ny >= self.map_h:
             return
+
+        # 2. 壁判定 (JSONから読み込んだデータ)
+        if (nx, ny) in self.current_walls:
+            """
+            壁に衝突 by Issa
+            jsonのwallsリストから座標を取得
+            移動先の座標がwallsリストに含まれていたら移動しない
+            """
+            self._update_dir(dx, dy)
+            return
+
+        # 3. NPC衝突判定
+        # 現在のマップにいて、かつ移動先にいるNPCがいるか
+        for _, data in self.app.talk.dialogues.items():
+            if data.get("map_id") == self.current_map_id:
+                pos = data.get("position")
+                if pos and pos[0] == nx and pos[1] == ny:
+                    self._update_dir(dx, dy)
+                    return
+
+        # 移動開始
+        self._update_dir(dx, dy)
+        self.dx = dx
+        self.dy = dy
+        self.moving = True
+        self.offset = 0
+
+    def _update_dir(self, dx, dy):
         if dy == +1:
             self.dir = "front"
         elif dy == -1:
@@ -76,10 +120,6 @@ class Field:
             self.dir = "right"
         elif dx == -1:
             self.dir = "left"
-        self.dx = dx
-        self.dy = dy
-        self.moving = True
-        self.offset = 0
 
     def draw(self, screen):
         if not self.map_image:
@@ -100,15 +140,19 @@ class Field:
             self.player_image = self.player_left
         screen.blit(self.player_image, self.player_rect)
 
-        # NPC描画
+        # NPC描画 (現在のマップにいるNPCのみ)
         for _, data in self.app.talk.dialogues.items():
+            # マップIDチェック
+            if data.get("map_id") != self.current_map_id:
+                continue
+
             pos = data.get("position")
             if not pos or len(pos) < 2:
                 continue
             nx, ny = pos[0], pos[1]
             screen_x = SCREEN_CENTER_X + (nx - self.app.x) * TILE + ox
             screen_y = SCREEN_CENTER_Y + (ny - self.app.y) * TILE + oy
-            # NPCを2*TILEサイズで描画
+
             npc_size = 12
             pygame.draw.rect(
                 screen, (200, 120, 80), (screen_x, screen_y, npc_size, npc_size)
@@ -129,25 +173,54 @@ class Field:
             )
             screen.blit(overlay, (0, 0))
 
-    def _check_transition_trigger(self):
-        if self.app.x == 0 and self.app.y == 0:
-            self._start_transition(os.path.join(self.BASE_DIR, "img", "transition.jpg"))
+        """
+        座標表示デバッグ用 by issa
+        map遷移の座標を画面に表示
+        """
+        coord_text = f"Map: {self.current_map_id} | ({self.app.x}, {self.app.y})"
+        # 文字の縁取り（黒）
+        for ox, oy in [(-1, -1), (-1, 1), (1, -1), (1, 1)]:
+            surf = self.app.font.render(coord_text, True, (0, 0, 0))
+            screen.blit(surf, (8 + ox, 8 + oy))
+        # 文字本体（白）
+        surf = self.app.font.render(coord_text, True, (255, 255, 255))
+        screen.blit(surf, (8, 8))
+        # ----------------------------------
 
-    def _start_transition(self, path):
-        if not os.path.isfile(path):
-            return
+    def _check_map_event(self):
+        """
+        現在の座標が出口リストにあるか確認 by Issa
+        座標をキーにする
+        current_posは毎回プレイヤーの座標を確認
+        if文でmaps.jsonのexitsリストを確認
+        もし座標が一致すれば_start_transition関数を呼び出し、マップ遷移を開始
+        """
+        current_pos = (self.app.x, self.app.y)
+        if current_pos in self.current_exits:
+            exit_data = self.current_exits[current_pos]
+            # 遷移開始
+            self._start_transition(
+                exit_data["target_map"],
+                exit_data.get("dest_x"),
+                exit_data.get("dest_y"),
+            )
+
+    def _start_transition(self, map_id, dest_x, dest_y):
         self.transitioning = True
         self.transition_radius = self.transition_max_radius
-        self.transition_target = path
+        self.transition_target_map_id = map_id
+        self.transition_dest_pos = (dest_x, dest_y)
         self._transition_stage = "out"
 
     def _update_transition(self):
         if self._transition_stage == "out":
             self.transition_radius -= self.transition_speed
             if self.transition_radius <= 0:
-                self.load_map(self.transition_target)
-                self.app.x = self.map_w // 2
-                self.app.y = self.map_h // 2
+                # 暗転中にマップ切り替え
+                self.load_map(self.transition_target_map_id)
+                if self.transition_dest_pos:
+                    self.app.x, self.app.y = self.transition_dest_pos
+
                 self.transition_radius = 0
                 self._transition_stage = "in"
         elif self._transition_stage == "in":
@@ -157,7 +230,21 @@ class Field:
                 self.transitioning = False
                 self._transition_stage = None
 
-    def load_map(self, path):
+    def load_map(self, map_id):
+        """
+        マップIDを指定してロード
+        """
+        if map_id not in self.map_data:
+            print(f"Map ID not found: {map_id}")
+            return
+
+        self.current_map_id = map_id
+        data = self.map_data[map_id]
+
+        # 画像ロード
+        img_name = data.get("image", "world_map.png")
+        path = os.path.join(self.BASE_DIR, "img", img_name)
+
         if os.path.isfile(path):
             self.map_image = pygame.image.load(path).convert()
             w, h = self.map_image.get_size()
@@ -167,6 +254,17 @@ class Field:
             self.map_image = None
             self.map_w = 0
             self.map_h = 0
+
+        # 壁データの展開 (Setにして高速化)
+        self.current_walls = set()
+        for w in data.get("walls", []):
+            self.current_walls.add(tuple(w))
+
+        # 出口データの展開 (Dictにして高速化)
+        self.current_exits = {}
+        for e in data.get("exits", []):
+            key = (e["x"], e["y"])
+            self.current_exits[key] = e
 
     def load_player(self):
         front = os.path.join(self.BASE_DIR, "img", "player_front.png")
