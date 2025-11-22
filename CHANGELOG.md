@@ -1,5 +1,9 @@
 # CHANGELOG of PBL-Game
 
+## v2.0.0 (2025-11-22-issa)
+- assets/dataのフォルダ作成
+- 画面左上に現在の座標を表示
+- field.pyを大幅に書き換え、jsonをもとにmap遷移するアルゴリズムへ
 ## v1.8.0 (2025-11-21)
 - **フォルダ構造の変更**
   <details>

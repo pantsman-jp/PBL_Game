@@ -4,6 +4,7 @@
             8,
             9
         ],
+        "map_id": "world",
         "lines": [
             "よく来たな！",
             "z キーを押したらクイズが始まるぞ！"
@@ -24,6 +25,7 @@
             10,
             7
         ],
+        "map_id": "world",
         "lines": [
             "Hello, world!"
         ]
