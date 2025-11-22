@@ -43,6 +43,7 @@
 - NPC 描画サイズを調整できるように修正
 - `dialogues/dialogues.json` の NPC 座標を 2 要素形式に変更
 - `field.py`, `talk.py` 内の NPC 表示・会話処理の修正
+- 実行方法変更 ; `python -m src.main` で実行
 
 ## v1.7.0 (2025-11-18)
 - プレイキャラクターの画像を移動方向に合わせて表示
