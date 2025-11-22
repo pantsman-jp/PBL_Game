@@ -42,6 +42,14 @@ class App:
         self.sfx_inv_open = _load_sound("chestopen.mp3")
         self.sfx_inv_close = _load_sound("chestclese.mp3")
 
+        # サウンドの ON/OFF 管理フラグ
+        self.sound_enabled = True
+        # 初期ボリュームを設定
+        try:
+            self._set_volume(1.0)
+        except Exception:
+            pass
+
         self.key_tracker = KeyTracker()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Tiny Quiz Field - pygame")
@@ -80,6 +88,29 @@ class App:
         self.system.load()
         self.scene_state = SCENE_GAME
 
+    def _set_volume(self, vol: float):
+        """内部: ロード済みのサウンドと music のボリュームを設定する。"""
+        try:
+            if pygame.mixer.get_init():
+                if self.sfx_inv_open:
+                    self.sfx_inv_open.set_volume(vol)
+                if self.sfx_inv_close:
+                    self.sfx_inv_close.set_volume(vol)
+                try:
+                    pygame.mixer.music.set_volume(vol)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    def toggle_sound(self):
+        """サウンドの ON/OFF を切り替える。Mキーで呼び出す。"""
+        self.sound_enabled = not self.sound_enabled
+        try:
+            self._set_volume(1.0 if self.sound_enabled else 0.0)
+        except Exception:
+            pass
+
     def run(self):
         while self.running:
             self.clock.tick(FPS)
@@ -107,12 +138,18 @@ class App:
                 if ev.type == pygame.KEYDOWN:
                     if ev.key == pygame.K_s:
                         self.system.save()
+                    # サウンドのトグル（Mキー）
+                    if ev.key == pygame.K_m:
+                        self.toggle_sound()
                     if ev.key == pygame.K_i:
                         self.inventory_open = not self.inventory_open
                         try:
-                            if self.inventory_open and self.sfx_inv_open:
+                            # サウンドが有効なときのみ効果音を鳴らす
+                            if self.inventory_open and self.sfx_inv_open and self.sound_enabled:
                                 self.sfx_inv_open.play()
-                            elif not self.inventory_open and self.sfx_inv_close:
+                            elif (
+                                not self.inventory_open and self.sfx_inv_close and self.sound_enabled
+                            ):
                                 self.sfx_inv_close.play()
                         except Exception:
                             pass
@@ -152,6 +189,10 @@ class App:
             items_text = "ITEMS: " + ", ".join(self.items) if self.items else "ITEMS: -"
             surf = self.font.render(items_text, True, (255, 255, 255))
             self.screen.blit(surf, (8, 8))
+            # サウンド状態を表示
+            sound_text = "SOUND: ON" if self.sound_enabled else "SOUND: OFF"
+            sound_surf = self.font.render(sound_text, True, (200, 200, 200))
+            self.screen.blit(sound_surf, (8, 32))
             self.talk.draw(self.screen, self.font)
 
             if self.inventory_open:
