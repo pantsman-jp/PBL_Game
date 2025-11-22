@@ -10,7 +10,8 @@
         "dest_x": 2,
         "dest_y": 2
       }
-    ]
+    ],
+    "bgm": "hiwada.mp3"
   },
   "village": {
     "image": "title.jpg",
@@ -23,6 +24,7 @@
         "dest_x": 72,
         "dest_y": 28
       }
-    ]
+    ],
+    "bgm": "kimigayo.mp3"
   }
 }
