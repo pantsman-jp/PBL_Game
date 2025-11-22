@@ -6,7 +6,7 @@
   <summary>フォルダ構造を表示する</summary>
 
   ```
-  PBL_Game
+  PBL-Game
   ├── assets
   │   ├── dialogues
   │   │   └── dialogues.json
@@ -65,8 +65,8 @@
 - field.pyの変更
   - 画面のサイズをでかく(キャラクターの解像度が決まり次第タイルサイズを変更予定)
   - キー押下で連続移動できるように変更
-  - self.speedは移動速度を変更できる  
-    offsetは1タイル分のピクセル数、TILE=60と定義されているなら1マス60px、offset+=self.speedとしているのでspeedを変化させると移動速度が上がる
+  - `self.speed` は移動速度を変更できる  
+    `offset` は1タイル分のピクセル数、`TILE=60` と定義されているなら1マス60px、`offset+=self.speed` としているのでspeedを変化させると移動速度が上がる
 
 ## v1.3.0 (2025-11-18)
 - 画面遷移の実装
@@ -103,7 +103,7 @@
 - 将来的なテクスチャ、BGM 追加に対応
 
 ### 対応予定
-| 種類 | 対応箇所 | コメント |
+| 種類 | 対応箇所 | 備考 |
 | :---: | :---: | :---: |
 | プレイヤー表示 | `core/field.py` 内 `# プレイヤー描画` | `px.blt(56, 56, 0, 0, 0, 16, 16, 0)` |
 | NPC 表示 | `core/field.py` 内 `# NPC描画` | `px.blt(screen_x, screen_y, 0, 16, 0, 16, 16, 0)` |
@@ -112,7 +112,7 @@
 | SE | `core/field.py`，`core/talk.py` | `px.play()` を適宜挿入 |
 
 **BGM**
-| 機能 | 実装箇所 | コメント例 |
+| 機能 | 実装箇所 | 備考 |
 | :---: | :---: | :---: |
 | BGM再生 | `System.play_bgm()` | `px.playm(track_id, loop=True)` を有効化 |
 | BGM停止 | `System.stop_bgm()` | `px.stop()` を有効化 |
@@ -134,5 +134,5 @@
 - `pyxel` のサンプルを追加
 
 ## v0.1.0 (2025-10-28)
-- リポジトリを作成
+- リポジトリ作成
 - プロジェクト開始
